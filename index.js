@@ -6,8 +6,9 @@ import 'react-select/dist/react-select.css';
 import 'react-virtualized/styles.css';
 import 'react-virtualized-select/styles.css';
 import 'pretty-checkbox/src/pretty.css';
+import ProfileForm from './components/profile-form.js';
 
-const options = $TICK_NAMES.map((name) => {
+const options = ['one', 'two', 'three'].map((name) => {
     return {value: name, label: name}
 })
 const filterOptions = createFilterOptions({options})
@@ -33,5 +34,4 @@ class GetOptions extends React.Component {
 
 ReactDOM.render(
     <div>
-    <label>Select Stocks</label>
-    <GetOptions/></div>, document.getElementById('root'));
+    <ProfileForm/></div>, document.getElementById('root'));
