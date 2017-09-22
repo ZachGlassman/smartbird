@@ -62,7 +62,6 @@ def index():
 @app.route('/submit', methods=['POST'])
 def submit():
     data = request.json
-    print(data)
     return jsonify({})
 
 
