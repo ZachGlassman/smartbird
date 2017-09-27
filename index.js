@@ -32,6 +32,30 @@ class GetOptions extends React.Component {
     }
 }
 
+class SmartBird extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            form: true
+        }
+        this.onSubmit = this
+            .onSubmit
+            .bind(this);
+    }
+    onSubmit() {
+        this.state.form = false;
+    }
+    render() {
+        return (
+            <div>
+                {this.state.form
+                    ? <ProfileForm onSubmit={this.onSubmit}/>
+                    : null}
+            </div>
+        )
+    }
+}
+
 ReactDOM.render(
     <div>
-    <ProfileForm/></div>, document.getElementById('root'));
+    <SmartBird/></div>, document.getElementById('root'));

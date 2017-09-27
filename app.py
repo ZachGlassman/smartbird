@@ -2,7 +2,8 @@ import os
 from flask import Flask, render_template, url_for, jsonify, request
 from flask_security import current_user, Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required
 from flask_sqlalchemy import SQLAlchemy
-import json
+from FlightModels.FlightScore import FlightScore
+from FlightModels.QPxFetcher import QPxFetcher
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
@@ -11,8 +12,8 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     'DATABASE_URL')
 app.config['SECURITY_REGISTERABLE'] = True
 app.config['SECURITY_PASSWORD_SALT'] = os.environ.get('SECURITY_PASSWORD_SALT')
+app.config['SECURITY_SEND_REGISTER_EMAIL'] = False
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
 db = SQLAlchemy(app)
 roles_users = db.Table('roles_users',
                        db.Column('user_id', db.Integer(),
@@ -40,6 +41,16 @@ class User(db.Model, UserMixin):
 
 class Profile(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.Integer)
+    source = db.Column(db.String(255))
+    destination = db.Column(db.String(255))
+    on_time = db.Column(db.Integer)
+    connection_length = db.Column(db.Integer)
+    flex_times = db.Column(db.Integer)
+    flight_time = db.Column(db.Integer)
+    airport_quality = db.Column(db.Integer)
+    airline_quality = db.Column(db.Integer)
+    price = db.Column(db.Integer)
 
 
 # setup security
@@ -62,6 +73,11 @@ def index():
 @app.route('/submit', methods=['POST'])
 def submit():
     data = request.json
+    qpx = QPxFetcher(os.environ.get('QPX_API_KEY'))
+    # set variables then find the score
+    fc = FlightScore()
+    fc.set_variables(data)
+    fc.find_best()
     return jsonify({})
 
 

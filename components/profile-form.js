@@ -1,6 +1,8 @@
 import React from 'react';
 import {DateRangePicker, SingleDatePicker, DayPickerRangeController} from 'react-dates';
+import Slider, {Range} from 'rc-slider';
 import 'react-dates/lib/css/_datepicker.css';
+import 'rc-slider/assets/index.css';
 
 var NAMES = [
     'Atlanta GA (Metropolitan Area)',
@@ -69,8 +71,15 @@ class ProfileForm extends React.Component {
         this.handleSubmit = this
             .handleSubmit
             .bind(this);
+        this.onSubmit = this
+            .onSubmit
+            .bind(this);
     }
-
+    onSubmit() {
+        this
+            .props
+            .onSubmit();
+    }
     componentDidMount() {
         VARIABLES.map((var_) => {
             this.setState({
@@ -102,7 +111,9 @@ class ProfileForm extends React.Component {
                 res.json();
             })
         }
+        this.onSubmit();
         event.preventDefault();
+
     }
 
     render() {
@@ -152,24 +163,35 @@ class ProfileForm extends React.Component {
                 </div>
                 {VARIABLES.map((obj, i) => {
                     return (
-                        <div key={i} className="row">
-                            <div className="col-sm-8">{obj.text}</div>
-                            <div className="col-sm-4">
-                                <select
-                                    value={this.state[obj.name]}
-                                    onChange={this.handleChange}
-                                    name={obj.name}
-                                    className="form-control"
-                                    id={obj.name}>
-                                    {[1, 2, 3, 4, 5].map((i) => {
-                                        return <option key={i}>{i}</option>
-                                    })}
-                                </select>
+                        <div key={i}>
+                            <div className="row">
+                                <div className="col-sm-4">{obj.text}</div>
+                                <div className="col-sm-8">
+                                    <div>
+                                        <Slider
+                                            value={this.state[obj.name]}
+                                            onChange={val => this.setState({
+                                            [obj.name]: val
+                                        })}
+                                            name={obj.name}
+                                            id={obj.name}
+                                            min={1}
+                                            max={5}
+                                            marks={{
+                                            1: 1,
+                                            2: 2,
+                                            3: 3,
+                                            4: 4,
+                                            5: 5
+                                        }}/>
+                                    </div>
+                                </div>
                             </div>
+                            {React.createElement('br')}
                         </div>
                     )
                 })}
-                <input className="btn" type="submit" value="Submit"/>
+                <input className="btn btn-success" type="submit" value="Submit"/>
             </form>
         )
     }
