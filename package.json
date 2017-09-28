@@ -10,6 +10,7 @@
     "watch": "concurrently \"webpack --progress -d --config webpack.config.js --watch\" \"flask run\" "
   },
   "dependencies": {
+    "d3": "^4.10.2",
     "extract-text-webpack-plugin": "^3.0.0",
     "html-webpack-plugin": "^2.30.1",
     "mdi": "^2.0.46",
@@ -20,8 +21,10 @@
     "react-addons-shallow-compare": "^15.6.0",
     "react-dates": "^12.6.0",
     "react-dom": "^15.6.1",
+    "react-modal": "^2.3.2",
     "react-select": "^1.0.0-rc.5",
     "react-select-fast-filter-options": "^0.2.2",
+    "react-spinners": "^0.1.4",
     "react-virtualized-select": "^3.1.0",
     "webpack": "^3.5.6",
     "webpack-dev-server": "^2.7.1"

@@ -74,11 +74,14 @@ def index():
 def submit():
     data = request.json
     qpx = QPxFetcher(os.environ.get('QPX_API_KEY'))
+    list_of_flights = qpx.get()
     # set variables then find the score
     fc = FlightScore()
     fc.set_variables(data)
-    fc.find_best()
-    return jsonify({})
+    fc.set_flights(list_of_flights)
+    scored = fc.score()
+
+    return jsonify(scored)
 
 
 if __name__ == '__main__':

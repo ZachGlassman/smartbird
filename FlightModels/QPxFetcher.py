@@ -1,5 +1,6 @@
 import requests
 import json
+from .QPxFlight import QPxFlight
 
 
 class QPxFetcher(object):
@@ -42,7 +43,21 @@ class QPxFetcher(object):
             }
         }
 
-    def get(self):
+    def _process_request(self, data):
+        """data object contains necessary metadata,
+        the trips object is what we want"""
+        trips = data['trips']['tripOption']
+        data_args = {k: v for k,
+                     v in data['trips']['data'].items() if k != 'kind'}
+        return [QPxFlight(i, **data_args) for i in trips]
+
+    def get1(self):
         r = requests.post(self.url, data=json.dumps(self.generate_payload()),
                           headers={'content-type': 'application/json'})
-        return r.json()
+        return self._process_request(r.json())
+
+    def get(self):
+        """temp where we can just send a saved result"""
+        with open('/home/zachglassman/Documents/TESTING/test_query.txt', 'r') as fp:
+            data = json.load(fp)
+        return self._process_request(data)

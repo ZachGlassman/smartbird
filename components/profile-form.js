@@ -1,6 +1,8 @@
 import React from 'react';
 import {DateRangePicker, SingleDatePicker, DayPickerRangeController} from 'react-dates';
 import Slider, {Range} from 'rc-slider';
+import {PropagateLoader} from 'react-spinners';
+
 import 'react-dates/lib/css/_datepicker.css';
 import 'rc-slider/assets/index.css';
 
@@ -62,7 +64,8 @@ class ProfileForm extends React.Component {
         super(props);
         this.state = {
             source: NAMES[0],
-            dest: NAMES[0]
+            dest: NAMES[0],
+            showForm: true
         };
 
         this.handleChange = this
@@ -75,10 +78,10 @@ class ProfileForm extends React.Component {
             .onSubmit
             .bind(this);
     }
-    onSubmit() {
+    onSubmit(data) {
         this
             .props
-            .onSubmit();
+            .onSubmit(data);
     }
     componentDidMount() {
         VARIABLES.map((var_) => {
@@ -98,6 +101,7 @@ class ProfileForm extends React.Component {
     }
 
     handleSubmit(event) {
+        this.setState({showForm: false})
         if (!('startDate' in this.state) || !('endDate' in this.state)) {
             alert('must enter dates');
         } else {
@@ -108,91 +112,98 @@ class ProfileForm extends React.Component {
                 },
                 body: JSON.stringify(this.state)
             }).then((res) => {
-                res.json();
+                this.setState({showForm: true});
+                this.onSubmit(res.json());
             })
         }
-        this.onSubmit();
         event.preventDefault();
 
     }
 
     render() {
         return (
-            <form onSubmit={this.handleSubmit}>
-                <div className="row">
-                    <div className="col-sm-6">
-                        <div className="row">
-                            <div className="form-group">
-                                <label htmlFor="source">From:</label>
-                                <select
-                                    value={this.state.source}
-                                    onChange={this.handleChange}
-                                    name="source"
-                                    className="form-control"
-                                    id="source">
-                                    {NAMES.map((name, i) => {
-                                        return <option key={i}>{name}</option>
-                                    })}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="row">
-                            <div className="form-group">
-                                <label htmlFor="dest">To:</label>
-                                <select
-                                    value={this.state.dest}
-                                    onChange={this.handleChange}
-                                    name="dest"
-                                    className="form-control"
-                                    id="dest">
-                                    {NAMES.map((name, i) => {
-                                        return <option key={i}>{name}</option>
-                                    })}
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-sm-6">
-                        <DateRangePicker
-                            startDate={this.state.startDate}
-                            endDate={this.state.endDate}
-                            onDatesChange={({startDate, endDate}) => this.setState({startDate, endDate})}
-                            focusedInput={this.state.focusedInput}
-                            onFocusChange={focusedInput => this.setState({focusedInput})}/>
-                    </div>
-                </div>
-                {VARIABLES.map((obj, i) => {
-                    return (
-                        <div key={i}>
+            <div>
+                {this.state.showForm
+                    ? <form onSubmit={this.handleSubmit}>
                             <div className="row">
-                                <div className="col-sm-4">{obj.text}</div>
-                                <div className="col-sm-8">
-                                    <div>
-                                        <Slider
-                                            value={this.state[obj.name]}
-                                            onChange={val => this.setState({
-                                            [obj.name]: val
-                                        })}
-                                            name={obj.name}
-                                            id={obj.name}
-                                            min={1}
-                                            max={5}
-                                            marks={{
-                                            1: 1,
-                                            2: 2,
-                                            3: 3,
-                                            4: 4,
-                                            5: 5
-                                        }}/>
+                                <div className="col-sm-6">
+                                    <div className="row">
+                                        <div className="form-group">
+                                            <label htmlFor="source">From:</label>
+                                            <select
+                                                value={this.state.source}
+                                                onChange={this.handleChange}
+                                                name="source"
+                                                className="form-control"
+                                                id="source">
+                                                {NAMES.map((name, i) => {
+                                                    return <option key={i}>{name}</option>
+                                                })}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div className="row">
+                                        <div className="form-group">
+                                            <label htmlFor="dest">To:</label>
+                                            <select
+                                                value={this.state.dest}
+                                                onChange={this.handleChange}
+                                                name="dest"
+                                                className="form-control"
+                                                id="dest">
+                                                {NAMES.map((name, i) => {
+                                                    return <option key={i}>{name}</option>
+                                                })}
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
+                                <div className="col-sm-6">
+                                    <DateRangePicker
+                                        startDate={this.state.startDate}
+                                        endDate={this.state.endDate}
+                                        onDatesChange={({startDate, endDate}) => this.setState({startDate, endDate})}
+                                        focusedInput={this.state.focusedInput}
+                                        onFocusChange={focusedInput => this.setState({focusedInput})}/>
+                                </div>
                             </div>
-                            {React.createElement('br')}
-                        </div>
-                    )
-                })}
-                <input className="btn btn-success" type="submit" value="Submit"/>
-            </form>
+                            {VARIABLES.map((obj, i) => {
+                                return (
+                                    <div key={i}>
+                                        <div className="row">
+                                            <div className="col-sm-4">{obj.text}</div>
+                                            <div className="col-sm-8">
+                                                <div>
+                                                    <Slider
+                                                        value={this.state[obj.name]}
+                                                        onChange={val => this.setState({
+                                                        [obj.name]: val
+                                                    })}
+                                                        name={obj.name}
+                                                        id={obj.name}
+                                                        min={1}
+                                                        max={5}
+                                                        marks={{
+                                                        1: 1,
+                                                        2: 2,
+                                                        3: 3,
+                                                        4: 4,
+                                                        5: 5
+                                                    }}/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {React.createElement('br')}
+                                    </div>
+                                )
+                            })}
+                            <input className="btn btn-success" type="submit" value="Submit"/>
+
+                        </form>
+                    : <div className="row d-block mx-auto">
+                        <PropagateLoader size={30} color={'#85a9e2'} loading={!this.state.showForm}/>
+                    </div>}
+            </div>
         )
     }
 }
