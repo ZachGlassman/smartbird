@@ -9,6 +9,11 @@ module.exports = {
         path: path.resolve('static'),
         filename: 'index_bundle.js'
     },
+    plugins: [
+        new webpack
+            .optimize
+            .UglifyJsPlugin({minimize: true})
+    ],
     module: {
         loaders: [
             {

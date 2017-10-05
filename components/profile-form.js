@@ -65,6 +65,8 @@ class ProfileForm extends React.Component {
         this.state = {
             source: NAMES[0],
             dest: NAMES[0],
+            one_way: true,
+            direct: false,
             showForm: true
         };
 
@@ -98,6 +100,7 @@ class ProfileForm extends React.Component {
             : target.value;
         const name = target.name;
         this.setState({[name]: value});
+        console.log(this.state);
     }
 
     handleSubmit(event) {
@@ -162,9 +165,31 @@ class ProfileForm extends React.Component {
                                     <DateRangePicker
                                         startDate={this.state.startDate}
                                         endDate={this.state.endDate}
-                                        onDatesChange={({startDate, endDate}) => this.setState({startDate, endDate})}
+                                        onDatesChange=
+                                        { ({startDate, endDate}) => this.setState({startDate, endDate}) }
                                         focusedInput={this.state.focusedInput}
-                                        onFocusChange={focusedInput => this.setState({focusedInput})}/>
+                                        onFocusChange=
+                                        { focusedInput => this.setState({focusedInput}) }/>
+                                    <div className="switch">
+                                        <label>
+                                            <input
+                                                onChange={this.handleChange}
+                                                name="one_way"
+                                                value={this.state.one_way}
+                                                type="checkbox"/>
+                                            One Way
+                                        </label>
+                                    </div>
+                                    <div className="switch">
+                                        <label>
+                                            <input
+                                                onChange={this.handleChange}
+                                                name="direct"
+                                                value={this.state.direct}
+                                                type="checkbox"/>
+                                            Direct
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                             {VARIABLES.map((obj, i) => {

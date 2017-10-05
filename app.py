@@ -4,6 +4,8 @@ from flask_security import current_user, Security, SQLAlchemyUserDatastore, User
 from flask_sqlalchemy import SQLAlchemy
 from FlightModels.FlightScore import FlightScore
 from FlightModels.QPxFetcher import QPxFetcher
+from FlightModels.bokeh_plots import create_bokeh_plot
+import json
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
@@ -53,6 +55,19 @@ class Profile(db.Model):
     price = db.Column(db.Integer)
 
 
+class Cities(db.Model):
+    Code = db.Column(db.Integer, primary_key=True)
+    Description = db.Column(db.String(255))
+    state = db.Column(db.String(255))
+    town = db.Column(db.String(255))
+
+    def serialize(self):
+        return {'code': self.Code,
+                'description': self.Description,
+                'state': self.state,
+                'town': self.town}
+
+
 # setup security
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
@@ -82,6 +97,19 @@ def submit():
     scored = fc.score()
 
     return jsonify(scored)
+
+
+@app.route('/render-graph', methods=['POST'])
+def render_graph():
+    data = request.json
+    script, id = create_bokeh_plot(data['data'])
+    return jsonify(dict(script=script, id=id))
+
+
+@app.route('/get_cities', methods=['GET'])
+def get_cities():
+    res = Cities.query.all()
+    return jsonify(json.dumps([i.serialize() for i in res]))
 
 
 if __name__ == '__main__':

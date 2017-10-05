@@ -36,14 +36,14 @@ class FlightScore(object):
         self._scorers = {'on-time': RandomScorer('on-time'),
                          'connection-length': RandomScorer('connection-length'),
                          'flexible-times': RandomScorer('flexible-times'),
-                         'short-flight': RandomScorer('short-flight'),
+                         'short-flight': NormalizeScorer('total_duration'),
                          'airport-quality': RandomScorer('airport-quality'),
                          'airline-quality': RandomScorer('airline-quality'),
                          'price': NormalizeScorer('fare')}
         self._res_calc = {'on-time': lambda x: x,
                           'connection-length': lambda x: x,
                           'flexible-times': lambda x: x,
-                          'short-flight': lambda x: x,
+                          'short-flight': lambda x: 6 - x,
                           'airport-quality': lambda x: x,
                           'airline-quality': lambda x: x,
                           'price': lambda x: 6 - x}
