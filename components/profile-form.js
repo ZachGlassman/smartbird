@@ -2,7 +2,7 @@ import React from 'react';
 import {DateRangePicker, SingleDatePicker, DayPickerRangeController} from 'react-dates';
 import Slider, {Range} from 'rc-slider';
 import {PropagateLoader} from 'react-spinners';
-
+import WheelGraph from './wheelgraph.js';
 import 'react-dates/lib/css/_datepicker.css';
 import 'rc-slider/assets/index.css';
 
@@ -67,7 +67,14 @@ class ProfileForm extends React.Component {
             dest: NAMES[0],
             one_way: true,
             direct: false,
-            showForm: true
+            showForm: true,
+            'on-time': 1,
+            'connection-length': 1,
+            'flexible-times': 1,
+            'short-flight': 1,
+            'airport-quality': 1,
+            'airline-quality': 1,
+            'price': 1
         };
 
         this.handleChange = this
@@ -228,6 +235,8 @@ class ProfileForm extends React.Component {
                     : <div className="row d-block mx-auto">
                         <PropagateLoader size={30} color={'#85a9e2'} loading={!this.state.showForm}/>
                     </div>}
+
+                <WheelGraph data={this.state}/>
             </div>
         )
     }

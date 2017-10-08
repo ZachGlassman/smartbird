@@ -23,24 +23,57 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link href="{{ url_for('static', filename='css/materialdesignicons.min.css') }}" media="all" rel="stylesheet" type="text/css"
     />
+    <script src="//maps.google.com/maps/api/js?sensor=true"></script>
+    <script src="//d3js.org/d3.v3.min.js"></script>
 
+    <style>
+        html,
+        body,
+        #map {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: auto !important;
+        }
+
+        .stations,
+        .stations svg {
+            position: absolute;
+        }
+
+        .stations svg {
+            width: 60px;
+            height: 20px;
+            padding-right: 100px;
+            font: 10px sans-serif;
+        }
+
+        .stations circle {
+            fill: brown;
+            stroke: black;
+            stroke-width: 1.5px;
+        }
+    </style>
 
 </head>
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-light">
         <a class="navbar-brand" href="#">
-          smartbird
+            smartbird
         </a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
         </button>
 
 
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
+                <a class="nav-item nav-link active" href="#">Home
+                    <span class="sr-only">(current)</span>
+                </a>
                 <a class="nav-item nav-link" href="/logout">Logout</a>
                 <a class="nav-item nav-link" href="/login">Login</a>
                 <a class="nav-item nav-link" href="/register">Register</a>
