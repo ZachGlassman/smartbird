@@ -15,9 +15,16 @@ class QPxFlight(object):
         self.carrier = trip['slice'][0]['segment'][0]['flight']['carrier']
         self.number = trip['slice'][0]['segment'][0]['flight']['number']
         self.n_legs = len(trip['slice'][0]['segment'])
+        self.segment = trip['slice'][0]['segment']
 
     def score(self, score_):
         self._score = score_
+
+    def get_airports(self):
+        return tuple([(i['leg'][0]['origin'], i['leg'][0]['destination']) for i in self.segment])
+
+    def get_airlines(self):
+        return tuple([i['flight']['carrier'] for i in self.segment])
 
     def json(self):
         return {'fare': self.fare,

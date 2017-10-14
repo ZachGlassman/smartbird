@@ -23,36 +23,18 @@
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link href="{{ url_for('static', filename='css/materialdesignicons.min.css') }}" media="all" rel="stylesheet" type="text/css"
     />
-    <script src="//maps.google.com/maps/api/js?sensor=true"></script>
-    <script src="//d3js.org/d3.v3.min.js"></script>
+    <script src="https://unpkg.com/topojson-client@3"></script>
+    <script src="//d3js.org/d3.v4.min.js"></script>
+    <script src="//d3js.org/queue.v1.min.js"></script>
+
 
     <style>
         html,
         body,
-        #map {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: auto !important;
-        }
-
-        .stations,
-        .stations svg {
-            position: absolute;
-        }
-
-        .stations svg {
-            width: 60px;
-            height: 20px;
-            padding-right: 100px;
-            font: 10px sans-serif;
-        }
-
-        .stations circle {
-            fill: brown;
-            stroke: black;
-            stroke-width: 1.5px;
+        .symbol {
+            fill: steelblue;
+            fill-opacity: .8;
+            stroke: #fff;
         }
     </style>
 

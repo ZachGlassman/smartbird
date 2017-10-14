@@ -107,7 +107,6 @@ class ProfileForm extends React.Component {
             : target.value;
         const name = target.name;
         this.setState({[name]: value});
-        console.log(this.state);
     }
 
     handleSubmit(event) {
@@ -134,109 +133,110 @@ class ProfileForm extends React.Component {
         return (
             <div>
                 {this.state.showForm
-                    ? <form onSubmit={this.handleSubmit}>
-                            <div className="row">
-                                <div className="col-sm-6">
-                                    <div className="row">
-                                        <div className="form-group">
-                                            <label htmlFor="source">From:</label>
-                                            <select
-                                                value={this.state.source}
-                                                onChange={this.handleChange}
-                                                name="source"
-                                                className="form-control"
-                                                id="source">
-                                                {NAMES.map((name, i) => {
-                                                    return <option key={i}>{name}</option>
-                                                })}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="form-group">
-                                            <label htmlFor="dest">To:</label>
-                                            <select
-                                                value={this.state.dest}
-                                                onChange={this.handleChange}
-                                                name="dest"
-                                                className="form-control"
-                                                id="dest">
-                                                {NAMES.map((name, i) => {
-                                                    return <option key={i}>{name}</option>
-                                                })}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-sm-6">
-                                    <DateRangePicker
-                                        startDate={this.state.startDate}
-                                        endDate={this.state.endDate}
-                                        onDatesChange=
-                                        { ({startDate, endDate}) => this.setState({startDate, endDate}) }
-                                        focusedInput={this.state.focusedInput}
-                                        onFocusChange=
-                                        { focusedInput => this.setState({focusedInput}) }/>
-                                    <div className="switch">
-                                        <label>
-                                            <input
-                                                onChange={this.handleChange}
-                                                name="one_way"
-                                                value={this.state.one_way}
-                                                type="checkbox"/>
-                                            One Way
-                                        </label>
-                                    </div>
-                                    <div className="switch">
-                                        <label>
-                                            <input
-                                                onChange={this.handleChange}
-                                                name="direct"
-                                                value={this.state.direct}
-                                                type="checkbox"/>
-                                            Direct
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                            {VARIABLES.map((obj, i) => {
-                                return (
-                                    <div key={i}>
+                    ? <div>
+                            <form onSubmit={this.handleSubmit}>
+                                <div className="row">
+                                    <div className="col-sm-6">
                                         <div className="row">
-                                            <div className="col-sm-4">{obj.text}</div>
-                                            <div className="col-sm-8">
-                                                <div>
-                                                    <Slider
-                                                        value={this.state[obj.name]}
-                                                        onChange={val => this.setState({
-                                                        [obj.name]: val
+                                            <div className="form-group">
+                                                <label htmlFor="source">From:</label>
+                                                <select
+                                                    value={this.state.source}
+                                                    onChange={this.handleChange}
+                                                    name="source"
+                                                    className="form-control"
+                                                    id="source">
+                                                    {NAMES.map((name, i) => {
+                                                        return <option key={i}>{name}</option>
                                                     })}
-                                                        name={obj.name}
-                                                        id={obj.name}
-                                                        min={1}
-                                                        max={5}
-                                                        marks={{
-                                                        1: 1,
-                                                        2: 2,
-                                                        3: 3,
-                                                        4: 4,
-                                                        5: 5
-                                                    }}/>
-                                                </div>
+                                                </select>
                                             </div>
                                         </div>
-                                        {React.createElement('br')}
+                                        <div className="row">
+                                            <div className="form-group">
+                                                <label htmlFor="dest">To:</label>
+                                                <select
+                                                    value={this.state.dest}
+                                                    onChange={this.handleChange}
+                                                    name="dest"
+                                                    className="form-control"
+                                                    id="dest">
+                                                    {NAMES.map((name, i) => {
+                                                        return <option key={i}>{name}</option>
+                                                    })}
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
-                                )
-                            })}
-                            <input className="btn btn-success" type="submit" value="Submit"/>
+                                    <div className="col-sm-6">
+                                        <DateRangePicker
+                                            startDate={this.state.startDate}
+                                            endDate={this.state.endDate}
+                                            onDatesChange=
+                                            { ({startDate, endDate}) => this.setState({startDate, endDate}) }
+                                            focusedInput={this.state.focusedInput}
+                                            onFocusChange=
+                                            { focusedInput => this.setState({focusedInput}) }/>
+                                        <div className="switch">
+                                            <label>
+                                                <input
+                                                    onChange={this.handleChange}
+                                                    name="one_way"
+                                                    value={this.state.one_way}
+                                                    type="checkbox"/>
+                                                One Way
+                                            </label>
+                                        </div>
+                                        <div className="switch">
+                                            <label>
+                                                <input
+                                                    onChange={this.handleChange}
+                                                    name="direct"
+                                                    value={this.state.direct}
+                                                    type="checkbox"/>
+                                                Direct
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                {VARIABLES.map((obj, i) => {
+                                    return (
+                                        <div key={i}>
+                                            <div className="row">
+                                                <div className="col-sm-4">{obj.text}</div>
+                                                <div className="col-sm-8">
+                                                    <div>
+                                                        <Slider
+                                                            value={this.state[obj.name]}
+                                                            onChange={val => this.setState({
+                                                            [obj.name]: val
+                                                        })}
+                                                            name={obj.name}
+                                                            id={obj.name}
+                                                            min={1}
+                                                            max={5}
+                                                            marks={{
+                                                            1: 1,
+                                                            2: 2,
+                                                            3: 3,
+                                                            4: 4,
+                                                            5: 5
+                                                        }}/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {React.createElement('br')}
+                                        </div>
+                                    )
+                                })}
+                                <input className="btn btn-success" type="submit" value="Submit"/>
 
-                        </form>
+                            </form>
+                            <WheelGraph data={this.state}/>
+                        </div>
                     : <div className="row d-block mx-auto">
                         <PropagateLoader size={30} color={'#85a9e2'} loading={!this.state.showForm}/>
                     </div>}
-
-                <WheelGraph data={this.state}/>
             </div>
         )
     }

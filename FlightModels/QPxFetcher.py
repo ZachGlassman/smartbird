@@ -58,6 +58,7 @@ class QPxFetcher(object):
 
     def get(self):
         """temp where we can just send a saved result"""
+        print('params', self._params)
         with open('/home/zachglassman/Documents/TESTING/test_query.txt', 'r') as fp:
             data = json.load(fp)
         return self._process_request(data)

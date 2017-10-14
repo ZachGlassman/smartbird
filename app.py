@@ -2,10 +2,11 @@ import os
 from flask import Flask, render_template, url_for, jsonify, request
 from flask_security import current_user, Security, SQLAlchemyUserDatastore, UserMixin, RoleMixin, login_required
 from flask_sqlalchemy import SQLAlchemy
-from FlightModels.FlightScore import FlightScore
+#from FlightScore import FlightScore
 from FlightModels.QPxFetcher import QPxFetcher
 from FlightModels.bokeh_plots import create_bokeh_plot
 import json
+
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
@@ -98,7 +99,71 @@ class Airports(db.Model):
     AIRPORT_THRU_DATE = db.Column(db.String(255))
     AIRPORT_IS_CLOSED = db.Column(db.Integer)
     AIRPORT_IS_LATEST = db.Column(db.Integer)
+    #db.relationship("DelayData", foreign_keys='airports."AIRPORT"')
+    #db.relationship("DelayData", foreign_keys='airports."AIRPORT"')
 
+
+class DelayData(db.Model):
+    __tablename__ = 'delay_data'
+    index = db.Column(db.Integer, primary_key=True)
+    YEAR = db.Column(db.Integer)
+    QUARTER = db.Column(db.Integer)
+    MONTH = db.Column(db.Integer)
+    DAY_OF_MONTH = db.Column(db.Integer)
+    DAY_OF_WEEK = db.Column(db.Integer)
+    FL_DATE = db.Column(db.String(255))
+    UNIQUE_CARRIER = db.Column(db.String(255))
+    AIRLINE_ID = db.Column(db.Integer)
+    CARRIER = db.Column(db.String(255))
+    TAIL_NUM = db.Column(db.String(255))
+    FL_NUM = db.Column(db.Integer)
+    ORIGIN_AIRPORT_ID = db.Column(db.Integer)
+    ORIGIN_AIRPORT_SEQ_ID = db.Column(db.Integer)
+    ORIGIN_CITY_MARKET_ID = db.Column(db.Integer)
+    DEST_AIRPORT_ID = db.Column(db.Integer)
+    DEST_AIRPORT_SEQ_ID = db.Column(db.Integer)
+    DEST_CITY_MARKET_ID = db.Column(db.Integer)
+    CRS_DEP_TIME = db.Column(db.Integer)
+    DEP_TIME = db.Column(db.Float)
+    DEP_DELAY = db.Column(db.Float)
+    DEP_DELAY_NEW = db.Column(db.Float)
+    DEP_DEL15 = db.Column(db.Float)
+    DEP_DELAY_GROUP = db.Column(db.Float)
+    DEP_TIME_BLK = db.Column(db.String(255))
+    TAXI_OUT = db.Column(db.Float)
+    WHEELS_OFF = db.Column(db.Float)
+    WHEELS_ON = db.Column(db.Float)
+    TAXI_IN = db.Column(db.Float)
+    CRS_ARR_TIME = db.Column(db.Integer)
+    ARR_TIME = db.Column(db.Float)
+    ARR_DELAY = db.Column(db.Float)
+    ARR_DELAY_NEW = db.Column(db.Float)
+    ARR_DEL15 = db.Column(db.Float)
+    ARR_DELAY_GROUP = db.Column(db.Float)
+    ARR_TIME_BLK = db.Column(db.String(255))
+    CANCELLED = db.Column(db.Float)
+    CANCELLATION_CODE = db.Column(db.String(255))
+    DIVERTED = db.Column(db.Float)
+    CRS_ELAPSED_TIME = db.Column(db.Float)
+    ACTUAL_ELAPSED_TIME = db.Column(db.Float)
+    AIR_TIME = db.Column(db.Float)
+    FLIGHTS = db.Column(db.Float)
+    DISTANCE = db.Column(db.Float)
+    DISTANCE_GROUP = db.Column(db.Integer)
+    CARRIER_DELAY = db.Column(db.Float)
+    WEATHER_DELAY = db.Column(db.Float)
+    NAS_DELAY = db.Column(db.Float)
+    SECURITY_DELAY = db.Column(db.Float)
+    LATE_AIRCRAFT_DELAY = db.Column(db.Float)
+    FIRST_DEP_TIME = db.Column(db.Float)
+    TOTAL_ADD_GTIME = db.Column(db.Float)
+    LONGEST_ADD_GTIME = db.Column(db.Float)
+    #Unnamed: 52 = db.Column(db.Float)
+
+    # origin = db.relationship("Airports",
+    #                         primaryjoin='DelayData.ORIGIN_AIRPORT_ID == Airports.AIRPORT')
+    # dest = db.relationship("Airports",
+    #                       primaryjoin='DelayData.DEST_AIRPORT_ID == Airports.AIRPORT')
 
 
 # setup security
@@ -124,6 +189,7 @@ def submit():
     qpx = QPxFetcher(os.environ.get('QPX_API_KEY'))
     list_of_flights = qpx.get()
     # set variables then find the score
+    from FlightScore import FlightScore
     fc = FlightScore()
     fc.set_variables(data)
     fc.set_flights(list_of_flights)
