@@ -1,7 +1,7 @@
 import abc
 import random
 
-from app import DelayData, Airports
+from app import DelayData, Airports, Airlines
 from sqlalchemy.orm import aliased
 from datetime import datetime
 from sqlalchemy.sql.expression import func
@@ -143,6 +143,59 @@ class AirlineQualityScorer(Scorer):
         return [-sum(i) / len(i) for i in rankings]
 
 
+class AirportQualityScorer(Scorer):
+    """for now this will be the sum (posibility with factors) of
+    the -average delay of departure and the total number of flights on that
+    airline grouped by airport and airline
+
+    This assumes with more flights comes more amentiies and such
+    can be replaced later if better metric is found
+    """
+
+    def _query(self, airlines, airports, start_date):
+        res = DelayData.query.join(Airports, Airports.AIRPORT_ID ==
+                                   DelayData.ORIGIN_AIRPORT_ID) \
+            .join(Airlines, Airlines.Code == DelayData.AIRLINE_ID) \
+            .with_entities(func.avg(DelayData.DEP_DELAY),
+                           func.stddev(DelayData.DEP_DELAY),
+                           func.count(DelayData.DEP_DELAY),
+                           Airlines.letter_code, Airports.AIRPORT) \
+            .filter(DelayData.MONTH == start_date.month) \
+            .filter(DelayData.DAY_OF_WEEK == (start_date.weekday() + 1)) \
+            .filter(Airports.AIRPORT.in_(airports)) \
+            .filter(Airlines.letter_code.in_(airlines))\
+            .group_by(Airlines.letter_code, Airports.AIRPORT)
+        return res.all()
+
+    def _score(self, flights, *args, **kwargs):
+        # TODO make more efficient by only getting correct pairs..
+        rel_airports = []
+        rel_airlines = []
+        for flight in flights:
+            rel_airports += [i[0] for i in flight.get_airports()]
+            rel_airlines += [i for i in flight.get_airlines()]
+        unique_airports = set(rel_airports)
+        unique_airlines = set(rel_airlines)
+        start_date, _ = _parse_dates(**kwargs)
+        res = self._query(unique_airlines, unique_airports, start_date)
+        res_dict = {}
+        for i in res:
+            res_dict["{}_{}".format(i[3], i[4])] = {
+                'mean': i[0], 'std': i[1], 'cnt': i[2]}
+        ans = []
+        for flight in flights:
+            airports = flight.get_airports()
+            airlines = flight.get_airlines()
+            sum_ = []
+            for i, j in zip(airports, airlines):
+                key = "{}_{}".format(j, i[0])
+                d = res_dict.get(key,  {
+                    'mean': 100, 'std': 100, 'cnt': 1})
+                sum_ += [-d['mean'] + d['cnt']]
+            ans.append(sum(sum_) / len(sum_))
+        return ans
+
+
 class FlightScore(object):
     def __init__(self):
         self._vars = {}
@@ -150,7 +203,7 @@ class FlightScore(object):
                          'connection-length': ConnectionScorer('connection-length'),
                          'flexible-times': FlightSTDScorer('flexible-times'),
                          'short-flight': NormalizeScorer('total_duration'),
-                         'airport-quality': RandomScorer('airport-quality'),
+                         'airport-quality': AirportQualityScorer('airport-quality'),
                          'airline-quality': AirlineQualityScorer('airline-quality'),
                          'price': NormalizeScorer('fare')}
         self._res_calc = {'on-time': lambda x: x,

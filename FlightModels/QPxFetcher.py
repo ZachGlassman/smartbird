@@ -1,6 +1,12 @@
 import requests
 import json
 from .QPxFlight import QPxFlight
+from datetime import datetime
+
+
+def _reformat_date(date):
+    d = datetime.strptime(date, '%Y-%m-%dT%H:%M:%S.%fZ')
+    return "{}-{}-{}".format(d.year, d.month, d.day)
 
 
 class QPxFetcher(object):
@@ -23,6 +29,8 @@ class QPxFetcher(object):
     def set_param(self, key, value):
         assert key in self._params.keys()
         self._params[key] = value
+        if key == 'date':
+            self._params[key] = _reformat_date(value)
 
     def generate_payload(self):
         return {
@@ -51,12 +59,12 @@ class QPxFetcher(object):
                      v in data['trips']['data'].items() if k != 'kind'}
         return [QPxFlight(i, **data_args) for i in trips]
 
-    def get1(self):
+    def get(self):
         r = requests.post(self.url, data=json.dumps(self.generate_payload()),
                           headers={'content-type': 'application/json'})
         return self._process_request(r.json())
 
-    def get(self):
+    def get1(self):
         """temp where we can just send a saved result"""
         print('params', self._params)
         with open('/home/zachglassman/Documents/TESTING/test_query.txt', 'r') as fp:

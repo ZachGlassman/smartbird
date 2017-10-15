@@ -63,10 +63,10 @@ class ProfileForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            source: NAMES[0],
-            dest: NAMES[0],
-            one_way: true,
-            direct: false,
+            'source': NAMES[0],
+            'dest': NAMES[5],
+            'one_way': true,
+            'direct': false,
             showForm: true,
             'on-time': 1,
             'connection-length': 1,

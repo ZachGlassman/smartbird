@@ -103,6 +103,13 @@ class Airports(db.Model):
     #db.relationship("DelayData", foreign_keys='airports."AIRPORT"')
 
 
+class Airlines(db.Model):
+    index = db.Column(db.Integer, primary_key=True)
+    letter_code = db.Column(db.String(255))
+    name = db.Column(db.String(255))
+    Code = db.Column(db.Integer)
+
+
 class DelayData(db.Model):
     __tablename__ = 'delay_data'
     index = db.Column(db.Integer, primary_key=True)
@@ -183,10 +190,43 @@ def index():
     return render_template('index.html', add_react=True)
 
 
+# TODO query city market database to get all relevent airports
+kluge = {
+    'Atlanta GA (Metropolitan Area)': 'ATL',
+    'Boston MA (Metropolitan Area)': 'BOS',
+    'Charlotte NC': 'CLT',
+    'Chicago IL': 'ORD',
+    'Dallas/Fort Worth TX': 'DFW',
+    'Denver CO': 'DEN',
+    'Detroit MI': 'DTW',
+    'Houston TX': 'IAH',
+    'Las Vegas NV': 'LAS',
+    'Los Angeles CA (Metropolitan Area)': 'LAX',
+    'Miami FL (Metropolitan Area)': 'MIA',
+    'Minneapolis/St. Paul MN': 'MSP',
+    'Nashville TN': 'BNA',
+    'New York City NY (Metropolitan Area)': 'JFK',
+    'Orlando FL': 'MCO',
+    'Philadelphia PA': 'PHL',
+    'Phoenix AZ': 'PHX',
+    'Portland OR': 'PWM',
+    'Salt Lake City UT': 'SLC',
+    'San Diego CA': 'SAN',
+    'San Francisco CA (Metropolitan Area)': 'SFO',
+    'Seattle WA': 'SEA',
+    'St. Louis MO': 'STL',
+    'Tampa FL (Metropolitan Area)': 'TPA',
+    'Washington DC (Metropolitan Area)': 'IAD'
+}
+
+
 @app.route('/submit', methods=['POST'])
 def submit():
     data = request.json
     qpx = QPxFetcher(os.environ.get('QPX_API_KEY'))
+    qpx.set_param('origin', kluge[data['source']])
+    qpx.set_param('dest', kluge[data['dest']])
+    qpx.set_param('date', data['startDate'])
     list_of_flights = qpx.get()
     # set variables then find the score
     from FlightScore import FlightScore
