@@ -97,7 +97,8 @@ class WheelGraph extends React.Component {
             .attr("dy", ".35em")
             .text((d) => {
                 return d.data.name;
-            });
+            })
+            .attr("fill", "black");
 
     }
 
