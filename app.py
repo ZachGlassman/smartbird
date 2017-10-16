@@ -190,6 +190,11 @@ def index():
     return render_template('index.html', add_react=True)
 
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+
 # TODO query city market database to get all relevent airports
 kluge = {
     'Atlanta GA (Metropolitan Area)': 'ATL',

@@ -1,0 +1,46 @@
+{% include "top.html" %}
+<div class="container">
+    <div class="jumbotron">
+        smartbird = wants + needs + preferences + flights
+    </div>
+    <h4>How does smartbird work?</h4>
+    <p>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#front" aria-expanded="false" aria-controls="front">
+            front end
+        </button>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#back" aria-expanded="false" aria-controls="back">
+            back end
+        </button>
+        <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#data" aria-expanded="false" aria-controls="data">
+            database
+        </button>
+    </p>
+    <div class="collapse" id="front">
+        <div class="card card-body">
+            <ul>
+                <li>React - javascript framework by facebook used to build the user interface and interarct with the backend
+                    API. </li>
+                <li>Webpack - used for bundling, collecting and minifying </li>
+                <li>Yarn - package management</li>
+            </ul>
+        </div>
+    </div>
+    <div class="collapse" id="back">
+        <div class="card card-body">
+            <img src="http://flask.pocoo.org/static/logo/flask.png" width="200">
+        </div>
+    </div>
+    <div class="collapse" id="data">
+        <div class="card card-body">
+            postgreSQL
+        </div>
+    </div>
+
+    <h4>Where does the data come from?</h4>
+
+    <h4>Who created smartbird?</h4>
+    <p>Hi I'm Zach and smartbird is my capstone project as a Data Incubator Fellow. smartbird has been lovingly crafted in the
+        Bay Area in order to help people have a better experience flying.</p>
+    <p> I decided to create smartbird after flying accross the country regularly</p>
+</div>
+{% include "bottom.html" %}
