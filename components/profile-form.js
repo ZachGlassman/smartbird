@@ -59,9 +59,22 @@ var VARIABLES = [
     }
 ];
 
+//format two demical places for string, assume that it comes in as decimal
+function formatTwoDecimal(x) {
+    let s = x.toString() + '0000'
+    let first = s.slice(2, 4);
+    let second = s.slice(5, 7);
+    return first + '.' + second
+}
+
 class ProfileForm extends React.Component {
     constructor(props) {
         super(props);
+        let ratio = 1 / VARIABLES.length;
+        let ratios_ = {};
+        for (let i = 0; i < VARIABLES.length; i++) {
+            ratios_[VARIABLES[i].name] = ratio;
+        }
         this.state = {
             'source': NAMES[0],
             'dest': NAMES[5],
@@ -74,7 +87,8 @@ class ProfileForm extends React.Component {
             'short-flight': 1,
             'airport-quality': 1,
             'airline-quality': 1,
-            'price': 1
+            ratios: ratios_,
+            '_total': VARIABLES.length
         };
 
         this.handleChange = this
@@ -85,6 +99,10 @@ class ProfileForm extends React.Component {
             .bind(this);
         this.onSubmit = this
             .onSubmit
+            .bind(this);
+
+        this.sliderChanged = this
+            .sliderChanged
             .bind(this);
     }
     onSubmit(data) {
@@ -97,6 +115,25 @@ class ProfileForm extends React.Component {
             this.setState({
                 [var_.name]: 1
             });
+        });
+    }
+
+    sliderChanged(val, obj) {
+        let diff = val - this.state[obj.name];
+        let old_total = this.state._total;
+        let new_ratios = {};
+        Object
+            .entries(this.state.ratios)
+            .forEach(([i, ele]) => {
+                if (i == obj.name) {
+                    ele = val / old_total;
+                }
+                new_ratios[i] = ele * old_total / (old_total + diff);
+            });
+        this.setState({
+            [obj.name]: val,
+            _total: old_total + diff,
+            ratios: new_ratios
         });
     }
 
@@ -205,13 +242,13 @@ class ProfileForm extends React.Component {
                                         <div key={i}>
                                             <div className="row">
                                                 <div className="col-sm-4">{obj.text}</div>
-                                                <div className="col-sm-8">
+                                                <div className="col-sm-6">
                                                     <div>
                                                         <Slider
                                                             value={this.state[obj.name]}
-                                                            onChange={val => this.setState({
-                                                            [obj.name]: val
-                                                        })}
+                                                            onChange={val => {
+                                                            this.sliderChanged(val, obj)
+                                                        }}
                                                             name={obj.name}
                                                             id={obj.name}
                                                             min={1}
@@ -224,6 +261,9 @@ class ProfileForm extends React.Component {
                                                             5: 5
                                                         }}/>
                                                     </div>
+                                                </div>
+                                                <div className="col-sm-2">
+                                                    {formatTwoDecimal(this.state.ratios[obj.name])}
                                                 </div>
                                             </div>
                                             {React.createElement('br')}
