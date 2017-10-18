@@ -239,8 +239,7 @@ def submit():
     fc.set_variables(data)
     fc.set_flights(list_of_flights)
     scored = fc.score()
-
-    return jsonify(scored)
+    return jsonify({'data': data, 'scores': scored})
 
 
 @app.route('/render-graph', methods=['POST'])

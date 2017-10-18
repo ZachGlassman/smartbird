@@ -140,7 +140,7 @@ class AirlineQualityScorer(Scorer):
         airlines = [flight.get_airlines() for flight in flights]
         rankings = [[self.ranking_dict.get(i, 5) for i in j] for j in airlines]
 
-        return [-sum(i) / len(i) for i in rankings]
+        return [-sum(i) / len(i) / 2 for i in rankings]
 
 
 class AirportQualityScorer(Scorer):

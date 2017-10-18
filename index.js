@@ -67,7 +67,8 @@ class SmartBird extends React.Component {
                 {this.state.result
                     ? (
                         <div>
-                            <button className="btn btn-danger" onClick={this.backButton}>Back</button><Results data={this.state.data}/></div>
+                            <button className="btn btn-danger" onClick={this.backButton}>Back</button>
+                            <Results params={this.state.data.data} data={this.state.data.scores}/></div>
                     )
                     : null}
             </div>

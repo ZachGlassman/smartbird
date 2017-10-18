@@ -70,11 +70,7 @@ function formatTwoDecimal(x) {
 class ProfileForm extends React.Component {
     constructor(props) {
         super(props);
-        let ratio = 1 / VARIABLES.length;
-        let ratios_ = {};
-        for (let i = 0; i < VARIABLES.length; i++) {
-            ratios_[VARIABLES[i].name] = ratio;
-        }
+
         this.state = {
             'source': NAMES[0],
             'dest': NAMES[5],
@@ -87,7 +83,6 @@ class ProfileForm extends React.Component {
             'short-flight': 1,
             'airport-quality': 1,
             'airline-quality': 1,
-            ratios: ratios_,
             '_total': VARIABLES.length
         };
 
@@ -121,19 +116,9 @@ class ProfileForm extends React.Component {
     sliderChanged(val, obj) {
         let diff = val - this.state[obj.name];
         let old_total = this.state._total;
-        let new_ratios = {};
-        Object
-            .entries(this.state.ratios)
-            .forEach(([i, ele]) => {
-                if (i == obj.name) {
-                    ele = val / old_total;
-                }
-                new_ratios[i] = ele * old_total / (old_total + diff);
-            });
         this.setState({
             [obj.name]: val,
-            _total: old_total + diff,
-            ratios: new_ratios
+            _total: old_total + diff
         });
     }
 
@@ -254,16 +239,16 @@ class ProfileForm extends React.Component {
                                                             min={1}
                                                             max={5}
                                                             marks={{
-                                                            1: 1,
-                                                            2: 2,
-                                                            3: 3,
-                                                            4: 4,
-                                                            5: 5
+                                                            1: '',
+                                                            2: '',
+                                                            3: '',
+                                                            4: '',
+                                                            5: ''
                                                         }}/>
                                                     </div>
                                                 </div>
                                                 <div className="col-sm-2">
-                                                    {formatTwoDecimal(this.state.ratios[obj.name])}
+                                                    {formatTwoDecimal(this.state[obj.name] / this.state._total)}
                                                 </div>
                                             </div>
                                             {React.createElement('br')}
