@@ -68,6 +68,8 @@ def create_bokeh_plot(data):
                                       x_range=p.x_range), code=JS_CODE)
         toggle.js_on_click(callback)
         toggle_group.append(toggle)
-    script, div = components(row(p, column(toggle_group)))
+    script, div = components(
+        row(p, column(toggle_group, sizing_mode='scale_width'),
+            sizing_mode='scale_width'))
     id = div.split('=')[3].rstrip('"></div>\n</div>').strip('"')
     return script, id
