@@ -248,7 +248,7 @@ class ProfileForm extends React.Component {
                                                     </div>
                                                 </div>
                                                 <div className="col-sm-2">
-                                                    {formatTwoDecimal(this.state[obj.name] / this.state._total)}
+                                                    {formatTwoDecimal(this.state[obj.name] / this.state._total) + ' %'}
                                                 </div>
                                             </div>
                                             {React.createElement('br')}
