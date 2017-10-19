@@ -230,6 +230,8 @@ class ProfileForm extends React.Component {
                                 </div>
                                 <div className="row">
                                     <h4>Traveler Profile</h4>
+                                </div>
+                                <div className="row">
                                     <p>Tell me how you like to fly. Higher percentages mean you care more about that
                                         category.</p>
                                 </div>
