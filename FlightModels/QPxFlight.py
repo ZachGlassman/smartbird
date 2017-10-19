@@ -11,7 +11,8 @@ class QPxFlight(object):
     def _parse_trip(self, trip):
         self.fare = trip['saleTotal'].lstrip('USD')
         self.total_duration = trip['slice'][0]['segment'][0]['duration']
-        self.legs = trip['slice'][0]['segment'][0]['leg']
+        # trip['slice'][0]['segment'][0]['leg']
+        self.legs = [i['leg'] for i in trip['slice'][0]['segment']]
         self.carrier = trip['slice'][0]['segment'][0]['flight']['carrier']
         self.number = trip['slice'][0]['segment'][0]['flight']['number']
         self.n_legs = len(trip['slice'][0]['segment'])

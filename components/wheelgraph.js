@@ -99,7 +99,8 @@ class WheelGraph extends React.Component {
                 return d.data.name;
             })
             .style("fill", "black")
-            .style("stroke", "black");
+            .style("stroke", "black")
+            .style('line-width', '1px');
     }
 
     render() {

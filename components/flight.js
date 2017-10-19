@@ -5,9 +5,23 @@ import * as d3 from 'd3';
 class Flight extends React.Component {
     constructor(props) {
         super(props);
+
+        let origins = [];
+        let dest = '';
+        this
+            .props
+            .data
+            .legs
+            .map((d) => {
+                origins.push(d[0].origin);
+                dest = d[0].destination;
+            });
+
         this.state = {
-            leg: this.props.data.legs[0],
-            modal: false
+            leg: this.props.data.legs[0][0],
+            modal: false,
+            dest: dest,
+            origins: origins
         };
         this.renderTime = this
             .renderTime
@@ -25,7 +39,20 @@ class Flight extends React.Component {
         this.formatNumber = this
             .formatNumber
             .bind(this);
+        this.flightPath = this
+            .flightPath
+            .bind(this);
+    }
 
+    flightPath() {
+        let s = '';
+        this
+            .state
+            .origins
+            .map((d) => {
+                s = s + d + '->';
+            })
+        return s + this.state.dest;
     }
 
     formatNumber(x) {
@@ -174,9 +201,10 @@ class Flight extends React.Component {
                 </div>
                 <ul>
                     <li>Origin : {this.state.leg.origin}</li>
-                    <li>Destination : {this.state.leg.destination}</li>
+                    <li>Destination : {this.state.dest}</li>
                     <li>Time : {this.renderTime(this.state.leg.departureTime)}</li>
                     <li>Legs : {this.props.data.n_legs}</li>
+                    <li>Flight Path : {this.flightPath()}</li>
                 </ul>
                 <div className="card-footer">
                     <p>Price: {this.props.data.fare}</p>
