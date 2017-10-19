@@ -37,25 +37,32 @@ var NAMES = [
 var VARIABLES = [
     {
         name: 'on-time',
-        text: 'On Time flight'
+        text: 'On Time flight',
+        caption: 'arriving on time'
     }, {
         name: 'connection-length',
-        text: 'Connection Length'
+        text: 'Connection Length',
+        caption: 'reducing connections'
     }, {
         name: 'flexible-times',
-        text: 'Flexible Times'
+        text: 'Predictable Arrivals',
+        caption: 'predictable arrival times'
     }, {
         name: 'short-flight',
-        text: 'Short Flight Time'
+        text: 'Short Flight Time',
+        caption: 'out of the plane quickly'
     }, {
         name: 'airport-quality',
-        text: 'Airport Quality'
+        text: 'Airport Quality',
+        caption: 'nice airports'
     }, {
         name: 'airline-quality',
-        text: 'Airline Quality'
+        text: 'Airline Quality',
+        caption: 'nice airlines'
     }, {
         name: 'price',
-        text: 'Price'
+        text: 'Price',
+        caption: 'cheaper flights'
     }
 ];
 
@@ -221,11 +228,18 @@ class ProfileForm extends React.Component {
                                         </div>
                                     </div>
                                 </div>
+                                <div className="row">
+                                    <h4>Traveler Profile</h4>
+                                    <p>Tell me how you like to fly. Higher percentages mean you care more about that
+                                        category.</p>
+                                </div>
                                 {VARIABLES.map((obj, i) => {
                                     return (
                                         <div key={i}>
                                             <div className="row">
-                                                <div className="col-sm-4">{obj.text}</div>
+                                                <div className="col-sm-4">
+                                                    <b>{obj.text}</b>
+                                                    {React.createElement('br')}{obj.caption}</div>
                                                 <div className="col-sm-6">
                                                     <div>
                                                         <Slider
