@@ -1,0 +1,70 @@
+<!doctype html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+	<title>reveal.js</title>
+
+	<link rel="stylesheet" href="{{ url_for('static', filename='reveal/css/reveal.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='reveal/css/theme/black.css') }}">
+
+	<!-- Theme used for syntax highlighting of code -->
+	<link rel="stylesheet" href="{{ url_for('static', filename='reveal/lib/css/zenburn.css') }}">
+
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				smartbird - personalized flying
+
+			</section>
+			<section>
+				<p>Airplanes are great</p>
+				<p class="fragment" data-fragment-index="1">Flying is not so awesome</p>
+				<p class="fragment" data-fragment-index="2">
+					<span style="color:yellow">Lets make flying awesome!</span>
+				</p>
+			</section>
+			<section>
+				<h3>What is smartbird?</h3>
+				<p class="fragment" data-fragment-index="1">Data driven
+					<span style="color:yellow">personalized</span> flight recommendation engine</p>
+			</section>
+			<section>
+				<p>Travelers have different wants and needs</p>
+				<p class="fragment" data-fragment-index="1">flight choices
+					<span style="color:yellow">should</span> reflect that</p>
+				<p class="fragment" data-fragment-index="2">smartbird to the rescue</p>
+			</section>
+			<section>
+				Lets see a demo
+			</section>
+			<section>
+				smartbird - personalized flying
+			</section>
+		</div>
+	</div>
+
+	<script src="{{ url_for('static', filename='reveal/lib/js/head.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='reveal/js/reveal.js') }}"></script>
+
+	<script>
+		// More info about config & dependencies:
+		// - https://github.com/hakimel/reveal.js#configuration
+		// - https://github.com/hakimel/reveal.js#dependencies
+		Reveal.initialize({
+			dependencies: [
+				{ src: "{{ url_for('static', filename='reveal/plugin/markdown/marked.js') }}" },
+				{ src: "{{ url_for('static', filename='reveal/plugin/markdown/markdown.js') }}" },
+				{ src: "{{ url_for('static', filename='reveal/plugin/notes/notes.js' ) }}", async: true },
+				{ src: "{{ url_for('static', filename='reveal/plugin/highlight/highlight.js') }}", async: true, callback: function () { hljs.initHighlightingOnLoad(); } }
+			]
+		});
+	</script>
+</body>
+
+</html>

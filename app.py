@@ -197,6 +197,11 @@ def about():
     return render_template('about.html', script=script, div=div)
 
 
+@app.route('/show')
+def show():
+    return render_template('index_show.html')
+
+
 # TODO query city market database to get all relevent airports
 kluge = {
     'Atlanta GA (Metropolitan Area)': 'ATL',
