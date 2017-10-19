@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 #from FlightScore import FlightScore
 from FlightModels.QPxFetcher import QPxFetcher
 from FlightModels.bokeh_plots import create_bokeh_plot
+from FlightModels.example_plot import example_plot
 import json
 
 
@@ -192,7 +193,8 @@ def index():
 
 @app.route('/about')
 def about():
-    return render_template('about.html')
+    script, div = example_plot()
+    return render_template('about.html', script=script, div=div)
 
 
 # TODO query city market database to get all relevent airports

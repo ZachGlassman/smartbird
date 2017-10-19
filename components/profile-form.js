@@ -132,10 +132,10 @@ class ProfileForm extends React.Component {
     }
 
     handleSubmit(event) {
-        this.setState({showForm: false})
         if (!('startDate' in this.state) || !('endDate' in this.state)) {
             alert('must enter dates');
         } else {
+            this.setState({showForm: false});
             fetch("/submit", {
                 method: "POST",
                 headers: {
@@ -149,7 +149,6 @@ class ProfileForm extends React.Component {
             })
         }
         event.preventDefault();
-
     }
 
     render() {

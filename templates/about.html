@@ -40,10 +40,8 @@
                 </h5>
             </div>
             <div id="collapseGraph" class="collapse" role="tabpanel" aria-labelledby="headingGraph" data-parent="#accordion">
-
-                make plot
-
-
+                {{div|safe}} smartbird can notice non-obvious trends in airline statistics. For example, Delta is great to fly on Sunday,
+                but no so great on Monday.
             </div>
         </div>
         <div class="card">
@@ -86,4 +84,4 @@
         </div>
     </div>
 </div>
-{% include "bottom.html" %}
+{{script | safe}} {% include "bottom.html" %}
